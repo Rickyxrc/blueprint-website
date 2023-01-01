@@ -69,7 +69,7 @@ export default {
   methods: {
     getData () {
       axios({
-        url: 'http://data.dsp.rickyxrc.top/list.csv',
+        url: 'https://datadsp.rickyxrc.top/list.csv',
         method: 'get'
       })
         .then((data) => {
