@@ -20,8 +20,21 @@
               <el-input v-model="form.author" @input="updateData()" />
             </el-form-item>
             <el-form-item label="蓝图建筑个数">
-              <min-max v-model:minNum="form.buildingNum.min" v-model:maxNum="form.buildingNum.max"
+              <min-max v-model:minNum="form.buildingNum.min" v-model:maxNum="form.buildingNum.max" :settingMax="100000"
                 @change="updateData()" />
+            </el-form-item>
+            <el-form-item label="蓝图用电量">
+              <min-max v-model:minNum="form.yongdianliang.min" v-model:maxNum="form.yongdianliang.max"
+                :settingMax="100000000" @change="updateData()" />
+              &nbsp;&nbsp;( {{ solveUsage(form.yongdianliang.min * 1000) }} ~ {{ solveUsage(form.yongdianliang.max *
+    1000)
+}} )
+            </el-form-item>
+            <el-form-item label="蓝图发电量">
+              <min-max v-model:minNum="form.fadianliang.min" v-model:maxNum="form.fadianliang.max"
+                :settingMax="100000000" @change="updateData()" />
+              &nbsp;&nbsp;( {{ solveUsage(form.fadianliang.min * 1000) }} ~ {{ solveUsage(form.fadianliang.max * 1000)
+}} )
             </el-form-item>
             <!-- <el-form-item label="蓝图建筑过滤">
               <building-filter />
@@ -78,7 +91,7 @@
 
   <el-drawer v-model="showSources" title="该蓝图需要的原料">
     <div v-for="i in reqSources" v-bind:key="i"><span style="display:inline-block;width:10rem;">{{
-    i.split(':')[0]
+    t(':')[0]
 }}</span>
       {{ i.split(':')[1] }} / min
     </div>
@@ -104,7 +117,9 @@ export default {
       showFilter: true,
       form: {
         author: '',
-        buildingNum: { min: 0, max: 100000 }
+        buildingNum: { min: 0, max: 100000 },
+        yongdianliang: { min: 0, max: 100000 },
+        fadianliang: { min: 0, max: 100000 }
       }
     }
   },
@@ -150,6 +165,12 @@ export default {
           // 作者名称
           if (this.blueprintraw[i].蓝图作者.toLowerCase().indexOf(this.form.author.toLowerCase()) === -1)
             continue
+          // 用电量
+          if (this.blueprintraw[i].蓝图用电量 > this.form.yongdianliang.max * 1000 || this.blueprintraw[i].蓝图用电量 < this.form.yongdianliang.min * 1000)
+            continue
+          // 发电量
+          if (this.blueprintraw[i].蓝图发电量 > this.form.fadianliang.max * 1000 || this.blueprintraw[i].蓝图发电量 < this.form.fadianliang.min * 1000)
+            continue
         }
 
         this.blueprint.push(this.blueprintraw[i])
@@ -173,13 +194,13 @@ export default {
       if (val >= 0 && val < 1000)
         return val + 'W'
       if (val >= 1000 && val < 1000000)
-        return val / 1000 + 'KW'
+        return (val / 1000).toFixed(2) + 'KW'
       if (val >= 1000000 && val < 1000000000)
-        return val / 1000000 + 'MW'
+        return (val / 1000000).toFixed(2) + 'MW'
       if (val >= 1000000000 && val < 1000000000000)
-        return val / 1000000000 + 'GW'
+        return (val / 1000000000).toFixed(2) + 'GW'
       if (val >= 1000000000000 && val < 1000000000000000)
-        return val / 1000000000000 + 'TW'
+        return (val / 1000000000000).toFixed(2) + 'TW'
     }
   },
   watch: {
