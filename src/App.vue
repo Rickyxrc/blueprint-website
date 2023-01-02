@@ -1,17 +1,17 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-header style="height:10vh;">
+      <el-header style="height: 10vh">
         <el-menu class="el-menu-demo" mode="horizontal" :ellipsis="false">
           <el-menu-item index="0">戴森球计划 蓝图分享仓库</el-menu-item>
           <div class="flex-grow"></div>
         </el-menu>
       </el-header>
-      <el-main style="height:90vh;overflow:hidden">
+      <el-main style="height: 90vh; overflow: hidden">
         <el-input v-model="inputdata" placeholder="搜索蓝图名称..."></el-input>
         <el-divider content-position="left">
           <span @click="updateFilterStatus()">
-            高级过滤条件(点击{{ showFilter == true ? '隐藏' : '显示' }})
+            高级过滤条件(点击{{ showFilter == true ? "隐藏" : "显示" }})
           </span>
         </el-divider>
         <template v-if="showFilter">
@@ -20,21 +20,32 @@
               <el-input v-model="form.author" @input="updateData()" />
             </el-form-item>
             <el-form-item label="蓝图建筑个数">
-              <min-max v-model:minNum="form.buildingNum.min" v-model:maxNum="form.buildingNum.max" :settingMax="100000"
-                @change="updateData()" />
+              <min-max
+                v-model:minNum="form.buildingNum.min"
+                v-model:maxNum="form.buildingNum.max"
+                :settingMax="100000"
+                @change="updateData()"
+              />
             </el-form-item>
             <el-form-item label="蓝图用电量">
-              <min-max v-model:minNum="form.yongdianliang.min" v-model:maxNum="form.yongdianliang.max"
-                :settingMax="100000000" @change="updateData()" />
-              &nbsp;&nbsp;( {{ solveUsage(form.yongdianliang.min * 1000) }} ~ {{ solveUsage(form.yongdianliang.max *
-    1000)
-}} )
+              <min-max
+                v-model:minNum="form.yongdianliang.min"
+                v-model:maxNum="form.yongdianliang.max"
+                :settingMax="100000000"
+                @change="updateData()"
+              />
+              &nbsp;&nbsp;( {{ solveUsage(form.yongdianliang.min * 1000) }} ~
+              {{ solveUsage(form.yongdianliang.max * 1000) }} )
             </el-form-item>
             <el-form-item label="蓝图发电量">
-              <min-max v-model:minNum="form.fadianliang.min" v-model:maxNum="form.fadianliang.max"
-                :settingMax="100000000" @change="updateData()" />
-              &nbsp;&nbsp;( {{ solveUsage(form.fadianliang.min * 1000) }} ~ {{ solveUsage(form.fadianliang.max * 1000)
-}} )
+              <min-max
+                v-model:minNum="form.fadianliang.min"
+                v-model:maxNum="form.fadianliang.max"
+                :settingMax="100000000"
+                @change="updateData()"
+              />
+              &nbsp;&nbsp;( {{ solveUsage(form.fadianliang.min * 1000) }} ~
+              {{ solveUsage(form.fadianliang.max * 1000) }} )
             </el-form-item>
             <!-- <el-form-item label="蓝图建筑过滤">
               <building-filter />
@@ -46,8 +57,16 @@
           <el-table :data="blueprint" @cell-click="handleCellClick">
             <el-table-column prop="蓝图名称" label="蓝图名称" width="180" />
             <el-table-column prop="蓝图作者" label="蓝图作者" width="180" />
-            <el-table-column prop="蓝图摆放方式" label="蓝图摆放方式" width="180" />
-            <el-table-column prop="蓝图建筑个数" label="蓝图建筑个数" width="180" />
+            <el-table-column
+              prop="蓝图摆放方式"
+              label="蓝图摆放方式"
+              width="180"
+            />
+            <el-table-column
+              prop="蓝图建筑个数"
+              label="蓝图建筑个数"
+              width="180"
+            />
             <el-table-column prop="蓝图用电量" label="蓝图用电量" width="180">
               <template #default="scope">
                 {{ solveUsage(scope.row.蓝图用电量) }}
@@ -61,16 +80,20 @@
             <el-table-column prop="蓝图产物" label="蓝图产物" width="180" />
             <el-table-column label="蓝图原料" width="180">
               <template #default="scope">
-                <div v-if="scope.row.蓝图原料.length < 3"><span v-for="i in scope.row.蓝图原料" v-bind:key="i">{{ i
-}}/min&nbsp;</span>
+                <div v-if="scope.row.蓝图原料.length < 3">
+                  <span v-for="i in scope.row.蓝图原料" v-bind:key="i"
+                    >{{ i }}/min&nbsp;</span
+                  >
                 </div>
                 <div v-else>内容过长，点击查看</div>
               </template>
             </el-table-column>
             <el-table-column label="蓝图需求建筑" width="180">
               <template #default="scope">
-                <div v-if="scope.row.蓝图需求建筑.length < 3"><span v-for="i in scope.row.蓝图需求建筑" v-bind:key="i">{{ i
-}}&nbsp;</span>
+                <div v-if="scope.row.蓝图需求建筑.length < 3">
+                  <span v-for="i in scope.row.蓝图需求建筑" v-bind:key="i"
+                    >{{ i }}&nbsp;</span
+                  >
                 </div>
                 <div v-else>内容过长，点击查看</div>
               </template>
@@ -82,18 +105,18 @@
   </div>
 
   <el-drawer v-model="showBuildings" title="该蓝图需要的建筑">
-    <div v-for="i in reqBuildings" v-bind:key="i"><span style="display:inline-block;width:10rem;">{{
-    i.split(':')[0]
-}}</span>
-      {{ i.split(':')[1] }}
+    <div v-for="i in reqBuildings" v-bind:key="i">
+      <span style="display: inline-block; width: 10rem">{{
+        i.split(":")[0]
+      }}</span>
+      {{ i.split(":")[1] }}
     </div>
   </el-drawer>
 
   <el-drawer v-model="showSources" title="该蓝图需要的原料">
-    <div v-for="i in reqSources" v-bind:key="i"><span style="display:inline-block;width:10rem;">{{
-    t(':')[0]
-}}</span>
-      {{ i.split(':')[1] }} / min
+    <div v-for="i in reqSources" v-bind:key="i">
+      <span style="display: inline-block; width: 10rem">{{ i.split(":")[0] }}</span>
+      {{ i.split(":")[1] }} / min
     </div>
   </el-drawer>
 </template>
@@ -184,6 +207,7 @@ export default {
       if (column.label === '蓝图需求建筑') {
         this.reqBuildings = row.蓝图需求建筑
         this.showBuildings = true
+        return
       }
       if (column.label === '蓝图原料') {
         this.reqSources = row.蓝图原料
