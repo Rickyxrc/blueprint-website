@@ -32,12 +32,6 @@
               }} )
             </el-form-item>
             <el-form-item label="蓝图发电量">
-              <min-max v-model:minNum="form.yongdianliang.min" v-model:maxNum="form.yongdianliang.max"
-                :settingMax="100000000" @change="updateData()" />
-              &nbsp;&nbsp;( {{ solveUsage(form.yongdianliang.min * 1000) }} ~
-              {{ solveUsage(form.yongdianliang.max * 1000) }} )
-            </el-form-item>
-            <el-form-item label="蓝图发电量">
               <min-max v-model:minNum="form.fadianliang.min" v-model:maxNum="form.fadianliang.max"
                 :settingMax="100000000" @change="updateData()" />
               &nbsp;&nbsp;( {{ solveUsage(form.fadianliang.min * 1000) }} ~
