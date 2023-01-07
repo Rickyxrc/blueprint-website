@@ -32,12 +32,6 @@
               }} )
             </el-form-item>
             <el-form-item label="蓝图发电量">
-              <min-max v-model:minNum="form.fadianliang.min" v-model:maxNum="form.fadianliang.max"
-                :settingMax="100000000" @change="updateData()" />
-              &nbsp;&nbsp;( {{ solveUsage(form.fadianliang.min * 1000) }} ~ {{
-                solveUsage(form.fadianliang.max * 1000)
-              }} )
-              =======
               <min-max v-model:minNum="form.yongdianliang.min" v-model:maxNum="form.yongdianliang.max"
                 :settingMax="100000000" @change="updateData()" />
               &nbsp;&nbsp;( {{ solveUsage(form.yongdianliang.min * 1000) }} ~
@@ -48,7 +42,6 @@
                 :settingMax="100000000" @change="updateData()" />
               &nbsp;&nbsp;( {{ solveUsage(form.fadianliang.min * 1000) }} ~
               {{ solveUsage(form.fadianliang.max * 1000) }} )
-              >>>>>>> a39ac0891698c9b6808281672341f9d2ac1895bf
             </el-form-item>
             <!-- <el-form-item label="蓝图建筑过滤">
               <building-filter />
