@@ -24,7 +24,7 @@
                 @change="updateData()" />
             </el-form-item>
             <el-form-item label="蓝图用电量">
-              <<<<<<< HEAD <min-max v-model:minNum="form.yongdianliang.min" v-model:maxNum="form.yongdianliang.max"
+              <min-max v-model:minNum="form.yongdianliang.min" v-model:maxNum="form.yongdianliang.max"
                 :settingMax="100000000" @change="updateData()" />
               &nbsp;&nbsp;( {{ solveUsage(form.yongdianliang.min * 1000) }} ~ {{
                 solveUsage(form.yongdianliang.max *
@@ -75,29 +75,20 @@
             <el-table-column prop="蓝图产物" label="蓝图产物" width="180" />
             <el-table-column label="蓝图原料" width="180">
               <template #default="scope">
-                <<<<<<< HEAD <div v-if="scope.row.蓝图原料.length < 3"><span v-for="i in scope.row.蓝图原料" v-bind:key="i">{{
-                  i
-                }}/min&nbsp;</span>
-                  =======
-                  <div v-if="scope.row.蓝图原料.length < 3">
-                    <span v-for="i in scope.row.蓝图原料" v-bind:key="i">{{ i }}/min&nbsp;</span>
-                    >>>>>>> a39ac0891698c9b6808281672341f9d2ac1895bf
-                  </div>
-                  <div v-else>内容过长，点击查看</div>
+                <div v-if="scope.row.蓝图原料.length < 3">
+                  <span v-for="i in scope.row.蓝图原料" v-bind:key="i">{{ i }}/min&nbsp;</span>
+                </div>
+                <div v-else>内容过长，点击查看</div>
               </template>
             </el-table-column>
             <el-table-column label="蓝图需求建筑" width="180">
               <template #default="scope">
-                <<<<<<< HEAD <div v-if="scope.row.蓝图需求建筑.length < 3"><span v-for="i in scope.row.蓝图需求建筑"
-                    v-bind:key="i">{{
-                      i
-                    }}&nbsp;</span>
-                  =======
-                  <div v-if="scope.row.蓝图需求建筑.length < 3">
-                    <span v-for="i in scope.row.蓝图需求建筑" v-bind:key="i">{{ i }}&nbsp;</span>
-                    >>>>>>> a39ac0891698c9b6808281672341f9d2ac1895bf
-                  </div>
-                  <div v-else>内容过长，点击查看</div>
+
+                <div v-if="scope.row.蓝图需求建筑.length < 3">
+                  <span v-for="i in scope.row.蓝图需求建筑" v-bind:key="i">{{ i }}&nbsp;</span>
+
+                </div>
+                <div v-else>内容过长，点击查看</div>
               </template>
             </el-table-column>
             <el-table-column label="操作" width="90">
