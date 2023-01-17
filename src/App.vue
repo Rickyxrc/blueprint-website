@@ -7,7 +7,7 @@
           <div class="flex-grow"></div>
         </el-menu>
       </el-header>
-      <el-main style="height: 90vh; overflow: hidden">
+      <el-main style="height: 90vh; overflow-y: scroll">
         <el-input v-model="inputdata" placeholder="搜索蓝图名称..."></el-input>
         <el-divider content-position="left">
           <span @click="updateFilterStatus()">
@@ -36,6 +36,10 @@
                 :settingMax="100000000" @change="updateData()" />
               &nbsp;&nbsp;( {{ solveUsage(form.fadianliang.min * 1000) }} ~
               {{ solveUsage(form.fadianliang.max * 1000) }} )
+            </el-form-item>
+            <el-form-item label="蓝图提供地址">
+              <el-input v-model="blueprintaddr" />
+              <el-button @click="getData()">刷新</el-button>
             </el-form-item>
             <!-- <el-form-item label="蓝图建筑过滤">
               <building-filter />
@@ -123,6 +127,7 @@ export default {
       showBuildings: false,
       showSources: false,
       showFilter: true,
+      blueprintaddr: 'https://datadsp.rickyxrc.top',
       form: {
         author: '',
         buildingNum: { min: 0, max: 100000 },
@@ -134,7 +139,7 @@ export default {
   methods: {
     getData () {
       axios({
-        url: 'https://datadsp.rickyxrc.top/list.csv',
+        url: this.blueprintaddr + '/list.csv',
         method: 'get'
       })
         .then((data) => {
@@ -157,6 +162,10 @@ export default {
           }
           this.blueprintraw = res
           this.updateData()
+        })
+        .catch((err) => {
+          console.log(err)
+          ElMessage('网络错误')
         })
     },
     updateData () {
@@ -213,7 +222,7 @@ export default {
     },
     copy (author, name) {
       axios({
-        url: 'https://datadsp.rickyxrc.top/blueprints/' + author + '/' + name + '.txt',
+        url: this.blueprintaddr + '/blueprints/' + author + '/' + name + '.txt',
         method: 'get'
       })
         .then((dat) => {

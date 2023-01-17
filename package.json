@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && cd ./dist && appcache-manifest './**/**/**/**/**.**' --network-star -o ./appcache.manifest && cd ../",
     "preview": "vite preview"
   },
   "dependencies": {
+    "appcache-manifest": "^2.1.0",
     "axios": "^1.2.2",
     "element-plus": "^2.2.28",
     "vue": "^3.2.45",
