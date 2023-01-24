@@ -37,13 +37,13 @@
               &nbsp;&nbsp;( {{ solveUsage(form.fadianliang.min * 1000) }} ~
               {{ solveUsage(form.fadianliang.max * 1000) }} )
             </el-form-item>
+            <el-form-item label="蓝图建筑过滤">
+              <building-filter v-model:res-array="buildingFilter" @change="this.updateData()" />
+            </el-form-item>
             <el-form-item label="蓝图提供地址">
               <el-input v-model="blueprintaddr" />
               <el-button @click="getData()">刷新</el-button>
             </el-form-item>
-            <!-- <el-form-item label="蓝图建筑过滤">
-              <building-filter />
-            </el-form-item> -->
           </el-form>
           <el-divider />
         </template>
@@ -58,11 +58,13 @@
                 {{ solveUsage(scope.row.蓝图用电量) }}
               </template>
             </el-table-column>
-            <el-table-column prop="蓝图发电量" label="蓝图发电量" width="180">
-              <template #default="scope">
-                {{ solveUsage(scope.row.蓝图发电量) }}
-              </template>
-            </el-table-column>
+            <el-tooltip class="box-item" effect="dark" content="Top Left prompts info" placement="top-start">
+              <el-table-column prop="蓝图发电量" label="蓝图发电量" width="180">
+                <template #default="scope">
+                  {{ solveUsage(scope.row.蓝图发电量) }}
+                </template>
+              </el-table-column>
+            </el-tooltip>
             <el-table-column prop="蓝图产物" label="蓝图产物" width="180" />
             <el-table-column label="蓝图原料" width="180">
               <template #default="scope">
@@ -111,12 +113,12 @@
 </template>
 <script>
 import axios from 'axios'
-// import buildingFilter from './components/buildingFilter.vue'
+import buildingFilter from './components/buildingFilter.vue'
 import minMax from './components/minMax.vue'
 
 export default {
   components: {
-    // buildingFilter,
+    buildingFilter,
     minMax
   },
   data: () => {
@@ -128,6 +130,7 @@ export default {
       showSources: false,
       showFilter: true,
       blueprintaddr: 'https://datadsp.rickyxrc.top',
+      buildingFilter: [],
       form: {
         author: '',
         buildingNum: { min: 0, max: 100000 },
@@ -165,12 +168,28 @@ export default {
         })
         .catch((err) => {
           console.log(err)
+          // eslint-disable-next-line no-undef
           ElMessage('网络错误')
         })
     },
+    findNameSatisfy (index, filterObj) {
+      let i; let find = 0
+      for (i = 0; i < this.blueprintraw[index].蓝图需求建筑.length; i++) {
+        if (this.blueprintraw[index].蓝图需求建筑[i].split(':')[0] === filterObj.name) {
+          find = 1
+          if (this.blueprintraw[index].蓝图需求建筑[i].split(':')[1] < filterObj.min ||
+            this.blueprintraw[index].蓝图需求建筑[i].split(':')[1] > filterObj.max) {
+            return false
+          }
+        }
+      }
+      if (find === 0 && filterObj.min > 0)
+        return false
+      return true
+    },
     updateData () {
       this.blueprint = []
-      let i
+      let i, index
       for (i = 0; i < this.blueprintraw.length; i++) {
         if (this.blueprintraw[i].蓝图名称.toLowerCase().indexOf(this.inputdata.toLowerCase()) === -1) // 名称不包含
           continue
@@ -187,6 +206,15 @@ export default {
             continue
           // 发电量
           if (this.blueprintraw[i].蓝图发电量 > this.form.fadianliang.max * 1000 || this.blueprintraw[i].蓝图发电量 < this.form.fadianliang.min * 1000)
+            continue
+
+          let satisfy = 1
+          for (index = 0; index < this.buildingFilter.length; index++)
+            if (!this.findNameSatisfy(i, this.buildingFilter[index])) {
+              satisfy = 0
+              break
+            }
+          if (!satisfy)
             continue
         }
 
@@ -227,9 +255,17 @@ export default {
       })
         .then((dat) => {
           this.$copyText(dat.data).then(function (e) {
-            ElMessage('复制成功')
+            // eslint-disable-next-line no-undef
+            ElMessage({
+              message: '复制成功',
+              type: 'success'
+            })
           }, function (e) {
-            ElMessage('复制失败')
+            // eslint-disable-next-line no-undef
+            ElMessage({
+              message: '复制失败',
+              type: 'error'
+            })
           })
         })
     }
