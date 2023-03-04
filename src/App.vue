@@ -129,7 +129,7 @@ export default {
       showBuildings: false,
       showSources: false,
       showFilter: true,
-      blueprintaddr: 'https://datadsp.rickyxrc.top',
+      blueprintaddr: 'https://datadsp.rickyxrc.cc',
       buildingFilter: [],
       form: {
         author: '',
