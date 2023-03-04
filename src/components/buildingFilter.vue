@@ -19,7 +19,6 @@
   </el-select>
   <min-max v-model:minNum="buildingNowMin" v-model:maxNum="buildingNowMax" :settingMax="100000" />
   <el-button @click="addFilter()">添加</el-button>
-
 </template>
 <script>
 import minMax from './minMax.vue'
@@ -34,7 +33,7 @@ export default {
   emits: ['update:resArray', 'change'],
   data: () => {
     return {
-      buildingsExist: ['风力发电机', '电力感应塔', '传送带'],
+      buildingsExist: ['电力感应塔', '无线输电塔', '卫星配电站', '风力涡轮机', '火力发电厂', '太阳能板', '地热发电站', '微型聚变发电站', '蓄电器', '采矿机', '大型采矿机', '抽水站', '原油萃取站', '高速传送带', '传送带', '高速传送带', '极速传送带', '分拣器', '高速分拣器', '极速分拣器', '四向分流器', '自动集装机', '流速监测器', '喷涂机', '小型储物仓', '大型储物仓', '储液罐', '电弧熔炉', '位面熔炉', '制造台Mk.I', '制造台Mk.II', '制造台Mk.III', '原油精炼厂', '分馏塔', '化工厂', '量子化工厂', '微型粒子对撞机', '物流配送器', '行星内物流运输站', '星际物流运输站', '轨道采集器', '能量枢纽', '矩阵研究站', '电磁轨道弹射器', '射线接收站', '垂直发射井', '人造恒星'],
       buildingNowSelected: '',
       buildingNowMin: 0,
       buildingNowMax: 100000,
